@@ -1,0 +1,27 @@
+package src.main.java.com.zanoon;
+import java.awt.*;
+import javax.swing.*;
+
+import src.main.java.com.zanoon.render.SimulationPanel;
+
+
+
+
+public class Main 
+{
+    public static void main( String[] args )
+    {
+        // Window Creation
+        JFrame frame = new JFrame("Atom Simulation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 400);
+        frame.setLocationRelativeTo(null);
+        
+
+        SimulationPanel canvas = new SimulationPanel();
+        canvas.setBackground(Color.BLACK);
+
+        frame.add(canvas);
+        frame.setVisible(true);
+    }
+}
