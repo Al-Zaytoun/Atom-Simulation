@@ -1,7 +1,6 @@
 package src.main.java.com.zanoon;
 import java.awt.*;
 import javax.swing.*;
-
 import src.main.java.com.zanoon.render.SimulationPanel;
 
 
