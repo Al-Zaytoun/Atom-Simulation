@@ -21,12 +21,21 @@ public abstract class Particle {
         this.r = r;
     }
 
-    public double getx() {
+    public double getX() {
         return x;
     }
 
-    public double gety() {
+    public double getY() {
         return y;
+    }
+
+    public double getR() {
+        return r;
+    }
+
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
     public abstract double updatex();

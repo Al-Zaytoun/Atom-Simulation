@@ -1,16 +1,17 @@
 package src.main.java.com.zanoon.model;
 
-import java.awt.List;
+import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 // ArrayList<Particles>
 public class Nucleus {
     private int numOfNeutrons;
     private int numOfProtons;
-    private double cx;
-    private double cy;
+    private double cx; // Center x-coordinate
+    private double cy; // Center y-coordinate
 
-    public List<Particle> particles;
+    private List<Particle> particles;
 
     public Nucleus(int numOfNeutrons, int numOfProtons, double cx, double cy) {
         this.numOfNeutrons = numOfNeutrons;
@@ -20,14 +21,23 @@ public class Nucleus {
         this.particles = new ArrayList<>();
     }
 
-    // Create a function for simple cluster of protons + neutrons
+    // Function to randomly place particles around center point radius
+    private void initialPlacement(double cx, double cy) {
 
-    public void createNucleusCluster(double cx, double cy) {
+        int maxRadiusPlacement = 20; // Arbitrary value to indicate how far from the center a particle can be placed at
+        Random rand = new Random();
 
-        
+        for (int i = 0; i < particles.size(); i++) {
+            Particle particle = particles.get(i);
 
+            
+        }
 
     }
 
+
+    public void update() {
+        initialPlacement(cx, cy);
+    }
 
 }
