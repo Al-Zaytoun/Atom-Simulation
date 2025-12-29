@@ -10,6 +10,7 @@ import src.main.java.com.zanoon.model.Electron;
 public class SimulationPanel extends JPanel {
 
     private Electron electron;
+    private Electron electron2;
 
     // center of orbit (nucleus)
     private final double cx = 200;
@@ -26,9 +27,12 @@ public class SimulationPanel extends JPanel {
             8
         );
 
+        electron2 = new Electron(cx, cy + 80, 0, 0, 1, Math.PI, 8);
+
         // animation timer (~60 FPS)
-        Timer timer = new Timer(16, e -> {
-            electron.orbit(cx, cy, 0.03); // angular speed
+        Timer timer = new Timer(8, e -> {
+            electron.orbit(cx, cy, 0.04); // angular speed
+            electron2.orbit(cx, cy, 0.04);
             repaint();
         });
 
@@ -50,6 +54,15 @@ public class SimulationPanel extends JPanel {
             (int) (electron.getY() - electron.getR()),
             (int) (2 * electron.getR()),
             (int) (2 * electron.getR())
+        );
+    
+            // draw electron
+        g.setColor(Color.GREEN);
+        g.fillOval(
+            (int) (electron2.getX() - electron2.getR()),
+            (int) (electron2.getY() - electron2.getR()),
+            (int) (2 * electron2.getR()),
+            (int) (2 * electron2.getR())
         );
     }
 }
