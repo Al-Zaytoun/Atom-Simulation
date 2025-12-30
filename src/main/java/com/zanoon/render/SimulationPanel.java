@@ -12,27 +12,23 @@ public class SimulationPanel extends JPanel {
     private Electron electron;
     private Electron electron2;
 
+    private double R = 150; // Initial orbital radius
+    private double attraction = 0.88; // attraction magnitude force
+    private double v = Math.sqrt(attraction * R);
+
     // center of orbit (nucleus)
     private final double cx = 200;
     private final double cy = 200;
 
     public SimulationPanel() {
 
-        electron = new Electron(
-            cx + 80,
-            cy,
-            0, 0,
-            1,
-            0,
-            8
-        );
-
-        electron2 = new Electron(cx, cy + 80, 0, 0, 1, Math.PI, 8);
+        electron = new Electron(cx + R, cy, 0, v, 1, 0, 8);
+        electron2 = new Electron(cx, cy + R, -v, 0, 1, Math.PI, 8);
 
         // animation timer (~60 FPS)
-        Timer timer = new Timer(8, e -> {
-            electron.orbit(cx, cy, 0.04); // angular speed
-            electron2.orbit(cx, cy, 0.04);
+        Timer timer = new Timer(16, e -> {
+            electron.orbit(cx, cy, attraction);
+            electron2.orbit(cx, cy, attraction);
             repaint();
         });
 
