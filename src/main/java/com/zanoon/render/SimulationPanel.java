@@ -19,14 +19,11 @@ public class SimulationPanel extends JPanel {
     private int R = 150; // Initial orbital radius
     private double attraction = 0.88; // attraction magnitude force
     private double v = Math.sqrt(attraction * R);
-    private int maxRadius = 1;
 
     // center of orbit (nucleus)
     private final double cx = 200;
     private final double cy = 200;
 
-    private Neutron neutron;
-    private Proton proton;
     private Nucleus nucleus;
 
     public SimulationPanel() {
@@ -34,21 +31,29 @@ public class SimulationPanel extends JPanel {
         electron = new Electron(cx + R, cy, 0, v, 1, 0, 8);
         electron2 = new Electron(cx, cy + R, -v, 0, 1, Math.PI, 8);
 
-        proton = new Proton(0, 0, 0, 0, 1, 0, 8);
-        neutron = new Neutron(0, 0, 0, 0, 1, 0, 8);
-
         nucleus = new Nucleus(cx, cy);
         
-        nucleus.addParticle(proton);
-        nucleus.addParticle(neutron);
+        // Add all particles to the nucleus
+        nucleus.addParticle(new Proton(0, 0, 0, 0, 1, 0, 8));
+        nucleus.addParticle(new Neutron(0, 0, 0, 0, 1, 0, 8));
+        nucleus.addParticle(new Proton(0, 0, 0, 0, 1, 0, 8));
+        nucleus.addParticle(new Neutron(0, 0, 0, 0, 1, 0, 8));
+        nucleus.addParticle(new Proton(0, 0, 0, 0, 1, 0, 8));
 
-        nucleus.organicCluster(maxRadius); // This is done, to prevent all nucleus particles starting off stacked, which will prevent performance drain
+        // Initialize particle positions ONCE at startup
+        // spreadRadius should be enough for particles to fit without overlapping
+        double spreadRadius = 2; // Adjust based on number of particles
+        nucleus.initializeParticlePositions(spreadRadius);
 
         // animation timer (~60 FPS)
         Timer timer = new Timer(16, e -> {
-            nucleus.organicCluster(maxRadius);
+            // Update nucleus physics every frame
+            nucleus.updatePhysics();
+            
+            // Update electron orbits
             electron.orbit(cx, cy, attraction);
             electron2.orbit(cx, cy, attraction);
+            
             repaint();
         });
 
@@ -72,7 +77,7 @@ public class SimulationPanel extends JPanel {
             (int) (2 * electron.getR())
         );
     
-            // draw electron2
+        // draw electron2
         g.setColor(Color.CYAN);
         g.fillOval(
             (int) (electron2.getX() - electron2.getR()),
