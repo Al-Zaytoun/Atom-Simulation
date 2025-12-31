@@ -40,11 +40,11 @@ public class Nucleus {
 
     // Function to organically cluster nucleon particles together, it follows a 2-step process of randomly generating particles within a radius, and handling collisions with every particle
     public void updatePhysics() {
-        double dampingFactor = 0.95; // Global velocity damping
-        double collisionDamping = 0.3; // Energy loss during collisions
-        double centerStrength = 0.015; // Center attraction of center
-        double restThreshold = 0.5; // Velocity below this is considered "at rest"
-        double thermalVibration = 0.25; // Amplitude of random thermal motion
+        final double dampingFactor = 0.95; // Global velocity damping
+        final double collisionDamping = 0.3; // Energy loss during collisions
+        final double centerStrength = 0.015; // Center attraction of center
+        final double restThreshold = 0.5; // Velocity below this is considered "at rest"
+        final double thermalVibration = 0.25; // Amplitude of random thermal motion
         
         // Collision resolution iterations
         for (int i = 0; i < 3; i++) {
@@ -66,7 +66,7 @@ public class Nucleus {
                         
                         // Separate particles
                         double overlap = minDist - dist;
-                        double separationFactor = 0.5;
+                        double separationFactor = 0.5; // Factor of which both particles must move by. (0.50 --> they both move half of its radius)
                         
                         a.setPosition(
                             a.getX() + nx * overlap * separationFactor,
@@ -85,7 +85,7 @@ public class Nucleus {
                         // Only resolve if particles are moving toward each other
                         if (relativeVelocity < 0) {
                             double impulse = relativeVelocity * collisionDamping;
-                            
+                            // Opposite directions
                             a.vx -= impulse * nx;
                             a.vy -= impulse * ny;
                             b.vx += impulse * nx;

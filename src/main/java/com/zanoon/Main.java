@@ -1,6 +1,8 @@
 package src.main.java.com.zanoon;
 import java.awt.*;
 import javax.swing.*;
+
+import src.main.java.com.zanoon.engine.SimulationEngine;
 import src.main.java.com.zanoon.render.SimulationPanel;
 
 
@@ -18,6 +20,8 @@ public class Main
         
 
         SimulationPanel canvas = new SimulationPanel();
+        SimulationEngine engine = new SimulationEngine(canvas);
+        canvas.setEngine(engine);
         canvas.setBackground(Color.BLACK);
 
         frame.add(canvas);
