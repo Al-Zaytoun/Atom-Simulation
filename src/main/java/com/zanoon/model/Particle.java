@@ -1,4 +1,4 @@
-package src.main.java.com.zanoon.model;
+package com.zanoon.model;
 
 
 // Holds common values for each particle

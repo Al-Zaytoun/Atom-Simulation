@@ -1,9 +1,9 @@
-package src.main.java.com.zanoon;
+package com.zanoon;
 import java.awt.*;
 import javax.swing.*;
 
-import src.main.java.com.zanoon.engine.SimulationEngine;
-import src.main.java.com.zanoon.render.SimulationPanel;
+import com.zanoon.engine.SimulationEngine;
+import com.zanoon.render.SimulationPanel;
 
 
 

@@ -1,4 +1,4 @@
-package src.main.java.com.zanoon.model;
+package com.zanoon.model;
 
 // For now, we will use a 2D model then upgrade into better 3D model after
 public class Electron extends Particle{

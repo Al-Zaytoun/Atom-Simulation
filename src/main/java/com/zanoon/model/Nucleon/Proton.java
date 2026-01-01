@@ -1,6 +1,6 @@
-package src.main.java.com.zanoon.model.Nucleon;
+package com.zanoon.model.Nucleon;
 
-import src.main.java.com.zanoon.model.Particle;
+import com.zanoon.model.Particle;
 
 public class Proton extends Particle{
 

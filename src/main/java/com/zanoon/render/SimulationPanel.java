@@ -1,15 +1,15 @@
-package src.main.java.com.zanoon.render;
+package com.zanoon.render;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import src.main.java.com.zanoon.engine.SimulationEngine;
-import src.main.java.com.zanoon.model.Electron;
-import src.main.java.com.zanoon.model.Nucleus;
-import src.main.java.com.zanoon.model.Particle;
-import src.main.java.com.zanoon.model.Nucleon.Proton;
+import com.zanoon.engine.SimulationEngine;
+import com.zanoon.model.Electron;
+import com.zanoon.model.Nucleus;
+import com.zanoon.model.Particle;
+import com.zanoon.model.Nucleon.Proton;
 
 public class SimulationPanel extends JPanel {
 

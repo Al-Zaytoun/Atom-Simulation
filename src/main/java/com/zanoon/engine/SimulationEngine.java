@@ -1,12 +1,12 @@
-package src.main.java.com.zanoon.engine;
+package com.zanoon.engine;
 
 import javax.swing.Timer;
 
-import src.main.java.com.zanoon.model.Electron;
-import src.main.java.com.zanoon.model.Nucleus;
-import src.main.java.com.zanoon.model.Nucleon.Neutron;
-import src.main.java.com.zanoon.model.Nucleon.Proton;
-import src.main.java.com.zanoon.render.SimulationPanel;
+import com.zanoon.model.Electron;
+import com.zanoon.model.Nucleus;
+import com.zanoon.model.Nucleon.Neutron;
+import com.zanoon.model.Nucleon.Proton;
+import com.zanoon.render.SimulationPanel;
 
 public class SimulationEngine {
     
