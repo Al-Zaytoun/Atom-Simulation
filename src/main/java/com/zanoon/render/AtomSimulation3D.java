@@ -13,6 +13,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 public class AtomSimulation3D implements GLEventListener {
     
     private GLCanvas glCanvas;
+    private int renderingProgram;
 
     
     public AtomSimulation3D() {
@@ -48,11 +49,33 @@ public class AtomSimulation3D implements GLEventListener {
     @Override
     public void init(GLAutoDrawable drawable) {
 
-        // Retrieve the GL Object from the drawable
-        GL gl = drawable.getGL().getGL4();
+        GL4 gl = drawable.getGL().getGL4();
 
-        // Load shader source code
-        String vertexShaderSource = loadShaderAsString("/shaders/vertex_shader.glsl");
+        String vertexShaderSource = loadShaderAsString("/resources/shader/shader.vert");
+        String fragmentShaderSource = loadShaderAsString("/resources/shader/fragment.frag");
+        int vShaderID = gl.glCreateShader(GL4.GL_VERTEX_SHADER);
+        int fShaderID = gl.glCreateShader(GL4.GL_FRAGMENT_SHADER);
+        
+        // Upload source files & Compile
+        gl.glShaderSource(vShaderID, 1, new String[] {vertexShaderSource}, null);
+        gl.glShaderSource(fShaderID, 1, new String[] {fragmentShaderSource}, null);
+        
+        gl.glCompileShader(vShaderID);
+        gl.glCompileShader(fShaderID);
+
+        // Creating program executible for shaders to link to
+        renderingProgram = gl.glCreateProgram();
+
+        gl.glAttachShader(renderingProgram, vShaderID);
+        gl.glAttachShader(renderingProgram, fShaderID);
+        gl.glLinkProgram(renderingProgram);
+
+        // Clean up of shader files
+        gl.glDeleteShader(vShaderID);
+        gl.glDeleteShader(fShaderID);
+        
+
+
     }
 
     @Override
