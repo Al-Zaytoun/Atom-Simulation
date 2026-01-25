@@ -20,6 +20,9 @@ public class AtomSimulation3D implements GLEventListener {
     private int[] vao = new int[1]; // How the GPU should read the information in vbo
     private int[] vbo = new int[1]; // Buffer which contains the information of the vertex's
 
+    private static final int OBJECT = 0;
+    private static final int SHADER_LOCATION = 0;
+
     
     public AtomSimulation3D() {
         final GLProfile profile = GLProfile.get(GLProfile.GL4); // Version GL4
@@ -29,6 +32,10 @@ public class AtomSimulation3D implements GLEventListener {
         glCanvas.addGLEventListener(this);
 
 
+    }
+
+    public GLCanvas getCanvas() {
+        return this.glCanvas;
     }
 
     // Helper method to load shader source code from file
@@ -63,12 +70,12 @@ public class AtomSimulation3D implements GLEventListener {
         FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertexPositions);
 
         // Creation of VAO (For now we can simply create it as we dont have any necessary attributes needed onto the VBO)
-        gl.glGenVertexArrays(vao.length, vao, 0);
-        gl.glBindVertexArray(vao[0]);
+        gl.glGenVertexArrays(vao.length, vao, OBJECT);
+        gl.glBindVertexArray(vao[OBJECT]);
 
         
-        gl.glGenBuffers(vbo.length, vbo, 0);
-        gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, vbo[0]);
+        gl.glGenBuffers(vbo.length, vbo, OBJECT);
+        gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, vbo[OBJECT]);
         gl.glBufferData(GL4.GL_ARRAY_BUFFER, vertexPositions.length * 4, vertexBuffer, GL4.GL_STATIC_DRAW); // Size is in Bytes
         
         // Linking VBO to attributes
@@ -79,9 +86,8 @@ public class AtomSimulation3D implements GLEventListener {
         // false = Don't normalize (we are already in float, we do not need to convert from float -> float)
         // 0 = Stride (0 means tightly packed)
         // 0 = offset (Start at the beginning)
-        gl.glVertexAttribPointer(0, 3, GL4.GL_FLOAT, false, 0, 0);
-
-        gl.glEnableVertexAttribArray(0);
+        gl.glVertexAttribPointer(SHADER_LOCATION, 3, GL4.GL_FLOAT, false, 0, 0);
+        gl.glEnableVertexAttribArray(SHADER_LOCATION);
     }
 
 
@@ -115,13 +121,21 @@ public class AtomSimulation3D implements GLEventListener {
         gl.glDeleteShader(vShaderID);
         gl.glDeleteShader(fShaderID);
         
-
-        // Creation of VAO's and VBO'S 
+ 
     }
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        // rendering code here
+        
+        GL4 gl = drawable.getGL().getGL4();
+
+        gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
+        gl.glUseProgram(renderingProgram);
+
+
+        gl.glBindVertexArray(vao[OBJECT]);
+
+        gl.glDrawArrays(GL4.GL_TRIANGLES, 0, 3);
     }
 
     @Override
