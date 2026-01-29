@@ -14,8 +14,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -23,28 +23,26 @@
         <groupId>org.jogamp.jogl</groupId>
         <artifactId>jogl-all</artifactId>
         <version>2.6.0</version>
-    </dependency>
-    
+    </dependency> 
     <dependency>
-        <groupId>org.jogamp.jogl</groupId>
-        <artifactId>jogl-all</artifactId>
-        <version>2.6.0</version>
-        <classifier>natives-windows-amd64</classifier>
-    </dependency>
-    
+          <groupId>org.jogamp.jogl</groupId>
+          <artifactId>jogl-all</artifactId>
+          <version>2.6.0</version>
+          <classifier>natives-windows-amd64</classifier>
+      </dependency>
     <!-- GLUEGEN -->
     <dependency>
         <groupId>org.jogamp.gluegen</groupId>
         <artifactId>gluegen-rt</artifactId>
         <version>2.6.0</version>
     </dependency>
-    
     <dependency>
         <groupId>org.jogamp.gluegen</groupId>
         <artifactId>gluegen-rt</artifactId>
         <version>2.6.0</version>
         <classifier>natives-windows-amd64</classifier>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

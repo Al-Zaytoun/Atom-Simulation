@@ -11,16 +11,22 @@ import com.zanoon.render.SimulationPanel;
 
 public class Main 
 {
-    public static void main( String[] args )
+    public static void main(String[] args )
     {
-        // Window Creation
-        JFrame frame = new JFrame("Atom Simulation");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
+        SwingUtilities.invokeLater(() -> {
 
-        AtomSimulation3D sim = new AtomSimulation3D();
-        frame.add(sim.getCanvas());
+            AtomSimulation3D sim = new AtomSimulation3D();
+            
+            JFrame frame = new JFrame("Atom Simulation");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+
+            frame.add(sim.getCanvas());
+
+            frame.setVisible(true);
+        });         
+        // Window Creation
         
 
         // SimulationPanel canvas = new SimulationPanel();
@@ -29,6 +35,5 @@ public class Main
         // canvas.setBackground(Color.BLACK);
 
         // frame.add(canvas);
-        frame.setVisible(true);
     }
 }

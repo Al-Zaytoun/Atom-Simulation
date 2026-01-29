@@ -9,12 +9,12 @@ import java.nio.charset.StandardCharsets;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.*;
-import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.awt.GLJPanel;
 
 
 public class AtomSimulation3D implements GLEventListener {
     
-    private GLCanvas glCanvas;
+    private GLJPanel glCanvas;
     private int renderingProgram;
 
     private int[] vao = new int[1]; // How the GPU should read the information in vbo
@@ -25,16 +25,23 @@ public class AtomSimulation3D implements GLEventListener {
 
     
     public AtomSimulation3D() {
-        final GLProfile profile = GLProfile.get(GLProfile.GL4); // Version GL4
-        GLCapabilities capabilities = new GLCapabilities(profile);
+        System.setProperty("jogl.disable.openglarbcontext", "false");
+        System.setProperty("jogl.gljpanel.noglsl", "false");
 
-        glCanvas = new GLCanvas(capabilities);
+        // Use a more compatible profile
+        GLProfile profile = GLProfile.get(GLProfile.GL3);
+        GLCapabilities caps = new GLCapabilities(profile);
+        caps.setDoubleBuffered(true);
+        caps.setHardwareAccelerated(true);
+        caps.setAlphaBits(8);
+
+        this.glCanvas = new GLJPanel(caps);
         glCanvas.addGLEventListener(this);
 
 
     }
 
-    public GLCanvas getCanvas() {
+    public GLJPanel getCanvas() {
         return this.glCanvas;
     }
 
@@ -96,8 +103,8 @@ public class AtomSimulation3D implements GLEventListener {
 
         GL4 gl = drawable.getGL().getGL4();
 
-        String vertexShaderSource = loadShaderAsString("/resources/shader/shader.vert");
-        String fragmentShaderSource = loadShaderAsString("/resources/shader/fragment.frag");
+        String vertexShaderSource = loadShaderAsString("/com/zanoon/resources/shader/shader.vert");
+        String fragmentShaderSource = loadShaderAsString("/com/zanoon/resources/shader/fragment.frag");
         int vShaderID = gl.glCreateShader(GL4.GL_VERTEX_SHADER);
         int fShaderID = gl.glCreateShader(GL4.GL_FRAGMENT_SHADER);
         
@@ -131,7 +138,6 @@ public class AtomSimulation3D implements GLEventListener {
 
         gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
         gl.glUseProgram(renderingProgram);
-
 
         gl.glBindVertexArray(vao[OBJECT]);
 
