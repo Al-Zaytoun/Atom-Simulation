@@ -9,32 +9,35 @@ import java.nio.charset.StandardCharsets;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.*;
-import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.awt.GLJPanel;
 
 
 public class AtomSimulation3D implements GLEventListener {
     
-    private GLCanvas glCanvas;
+    private GLJPanel glCanvas;
     private int renderingProgram;
 
     private int[] vao = new int[1]; // How the GPU should read the information in vbo
-    private int[] vbo = new int[1]; // Buffer which contains the information of the vertex's
-
+    private int[] vbo = new int[2]; // Buffer which contains the information of the vertex's
+    
+    private static final int NUMOFSEGMENTS = 50;
     private static final int OBJECT = 0;
     private static final int SHADER_LOCATION = 0;
+
+    private static final double[] vertices = new double[( NUMOFSEGMENTS* 2) * 2];
 
     
     public AtomSimulation3D() {
         final GLProfile profile = GLProfile.get(GLProfile.GL4); // Version GL4
         GLCapabilities capabilities = new GLCapabilities(profile);
 
-        glCanvas = new GLCanvas(capabilities);
+        glCanvas = new GLJPanel(capabilities);
         glCanvas.addGLEventListener(this);
 
 
     }
 
-    public GLCanvas getCanvas() {
+    public GLJPanel getCanvas() {
         return this.glCanvas;
     }
 
@@ -43,7 +46,8 @@ public class AtomSimulation3D implements GLEventListener {
         StringBuilder result = new StringBuilder();
         
         try (InputStream in = AtomSimulation3D.class.getResourceAsStream(filePath);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+        
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 result.append(line).append("\n");
@@ -77,6 +81,7 @@ public class AtomSimulation3D implements GLEventListener {
         gl.glGenBuffers(vbo.length, vbo, OBJECT);
         gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, vbo[OBJECT]);
         gl.glBufferData(GL4.GL_ARRAY_BUFFER, vertexPositions.length * 4, vertexBuffer, GL4.GL_STATIC_DRAW); // Size is in Bytes
+        gl.glBufferData(GL4.GL_ARRAY_BUFFER, vertices.length * 4, vertexBuffer, GL4.GL_STATIC_DRAW);
         
         // Linking VBO to attributes
         
@@ -91,13 +96,29 @@ public class AtomSimulation3D implements GLEventListener {
     }
 
 
+    // method to draw a circle.
+    public void drawCircle(double x, double y, double radius, int numOfSegments) {
+        vertices[0] = 0; // X-Coordinate
+        vertices[1] = 0; // Y-Coordinate
+        
+        for (int i = 0; i <= numOfSegments; i++) {
+
+            float theta = (float) (2.0 * Math.PI * i / numOfSegments);
+            vertices[(i + 1) * 2] = (double) (Math.PI * Math.cos(theta));
+            vertices[(i + 1) * 2 + 1] = (double) (Math.PI * Math.sin(theta));
+
+        }
+
+    }
+ 
+
     @Override
     public void init(GLAutoDrawable drawable) {
 
         GL4 gl = drawable.getGL().getGL4();
 
-        String vertexShaderSource = loadShaderAsString("/resources/shader/shader.vert");
-        String fragmentShaderSource = loadShaderAsString("/resources/shader/fragment.frag");
+        String vertexShaderSource = loadShaderAsString("/com/zanoon/resources/shader/shader.vert");
+        String fragmentShaderSource = loadShaderAsString("/com/zanoon/resources/shader/fragment.frag");
         int vShaderID = gl.glCreateShader(GL4.GL_VERTEX_SHADER);
         int fShaderID = gl.glCreateShader(GL4.GL_FRAGMENT_SHADER);
         
@@ -132,10 +153,11 @@ public class AtomSimulation3D implements GLEventListener {
         gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
         gl.glUseProgram(renderingProgram);
 
-
         gl.glBindVertexArray(vao[OBJECT]);
 
-        gl.glDrawArrays(GL4.GL_TRIANGLES, 0, 3);
+        gl.glDrawArrays(GL4.GL_TRIANGLES_FAN, 0, NUMOFSEGMENTS * 2);
+
+        drawCircle(50.0, 50.0, 50.0, NUMOFSEGMENTS);
     }
 
     @Override
