@@ -42,7 +42,12 @@
         <version>2.6.0</version>
         <classifier>natives-windows-amd64</classifier>
     </dependency>
-
+    <dependency>
+        <groupId>org.joml</groupId>
+        <artifactId>joml</artifactId>
+        <version>1.10.8</version>
+        <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

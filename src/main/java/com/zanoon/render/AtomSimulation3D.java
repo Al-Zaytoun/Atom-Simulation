@@ -20,7 +20,7 @@ public class AtomSimulation3D implements GLEventListener {
     private int[] vao = new int[1]; // How the GPU should read the information in vbo
     private int[] vbo = new int[2]; // Buffer which contains the information of the vertex's
     
-    private static final int NUMOFSEGMENTS = 50;
+    private static final int NUMOFSEGMENTS = 500;
     private static final int OBJECT = 0;
     private static final int SHADER_LOCATION = 0;
 
@@ -69,7 +69,7 @@ public class AtomSimulation3D implements GLEventListener {
     }
 
     // method to draw a circle.
-    private float[] drawCircle(float x, float y, float z, float radius, int numOfSegments) {
+    private float[] drawCirclePoints(float x, float y, float z, float radius, int numOfSegments) {
 
         vertices[0] = x;
         vertices[1] = y;
@@ -94,7 +94,7 @@ public class AtomSimulation3D implements GLEventListener {
     // Helper method to create the VAO and VBO with pre-defined data
     private void setupVertices(GL4 gl) {
 
-        float[] vertexPositions = drawCircle(0.0f, 0.0f, 0.0f, 0.5f, NUMOFSEGMENTS);
+        float[] vertexPositions = drawCirclePoints(0.0f, 0.0f, 0.0f, 0.5f, NUMOFSEGMENTS);
 
         FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertexPositions);
 
