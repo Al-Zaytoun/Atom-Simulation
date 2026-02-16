@@ -1,10 +1,7 @@
 package com.zanoon;
-import java.awt.*;
 import javax.swing.*;
-
-import com.zanoon.engine.*;
 import com.zanoon.render.AtomSimulation3D;
-import com.zanoon.render.SimulationPanel;
+
 
 
 

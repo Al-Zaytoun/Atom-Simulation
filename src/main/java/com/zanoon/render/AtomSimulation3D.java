@@ -24,7 +24,7 @@ public class AtomSimulation3D implements GLEventListener {
     private static final int OBJECT = 0;
     private static final int SHADER_LOCATION = 0;
 
-    private static final double[] vertices = new double[( NUMOFSEGMENTS* 2) * 2];
+    private static final float[] vertices = new float[(NUMOFSEGMENTS + 2) * 3]; // (x, y, z)
 
     
     public AtomSimulation3D() {
@@ -68,16 +68,33 @@ public class AtomSimulation3D implements GLEventListener {
         
     }
 
+    // method to draw a circle.
+    private float[] drawCircle(float x, float y, float z, float radius, int numOfSegments) {
+
+        vertices[0] = x;
+        vertices[1] = y;
+        vertices[2] = z;
+        
+        int vertexIndex = 3; // Start after first three points (center-x, center-y, center-z)
+        
+        for (int i = 0; i <= numOfSegments; i++) {
+
+            float theta = (float) (2.0 * Math.PI * i / numOfSegments);
+            vertices[vertexIndex++] =  (float) (x + radius * Math.cos(theta));
+            vertices[vertexIndex++] = (float) (y + radius * Math.sin(theta));
+            vertices[vertexIndex++] = 0.0f; // For now, the 2D Implementation will have a z-value of 0.
+
+        }
+
+        return vertices;
+
+    }
+
 
     // Helper method to create the VAO and VBO with pre-defined data
     private void setupVertices(GL4 gl) {
 
-        float[] vertexPositions = 
-        {  // x, y, z
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
-        };
+        float[] vertexPositions = drawCircle(0.0f, 0.0f, 0.0f, 0.5f, NUMOFSEGMENTS);
 
         FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertexPositions);
 
@@ -89,7 +106,6 @@ public class AtomSimulation3D implements GLEventListener {
         gl.glGenBuffers(vbo.length, vbo, OBJECT);
         gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, vbo[OBJECT]);
         gl.glBufferData(GL4.GL_ARRAY_BUFFER, vertexPositions.length * 4, vertexBuffer, GL4.GL_STATIC_DRAW); // Size is in Bytes
-        gl.glBufferData(GL4.GL_ARRAY_BUFFER, vertices.length * 4, vertexBuffer, GL4.GL_STATIC_DRAW);
         
         // Linking VBO to attributes
         
@@ -103,28 +119,12 @@ public class AtomSimulation3D implements GLEventListener {
         gl.glEnableVertexAttribArray(SHADER_LOCATION);
     }
 
-
-    // method to draw a circle.
-    public void drawCircle(double x, double y, double radius, int numOfSegments) {
-        vertices[0] = 0; // X-Coordinate
-        vertices[1] = 0; // Y-Coordinate
-        
-        for (int i = 0; i <= numOfSegments; i++) {
-
-            float theta = (float) (2.0 * Math.PI * i / numOfSegments);
-            vertices[(i + 1) * 2] = (double) (Math.PI * Math.cos(theta));
-            vertices[(i + 1) * 2 + 1] = (double) (Math.PI * Math.sin(theta));
-
-        }
-
-    }
  
 
     @Override
     public void init(GLAutoDrawable drawable) {
 
         GL4 gl = drawable.getGL().getGL4();
-
 
         String vertexShaderSource = loadShaderAsString("/com/zanoon/resources/shader/shader.vert");
         String fragmentShaderSource = loadShaderAsString("/com/zanoon/resources/shader/fragment.frag");
@@ -164,9 +164,8 @@ public class AtomSimulation3D implements GLEventListener {
 
         gl.glBindVertexArray(vao[OBJECT]);
 
-        gl.glDrawArrays(GL4.GL_TRIANGLE_FAN, 0, NUMOFSEGMENTS * 2);
+        gl.glDrawArrays(GL4.GL_TRIANGLE_FAN, 0, NUMOFSEGMENTS + 2); // +2 because we need 1 vertex for the center point, and the other +1 to close the circle
 
-        drawCircle(50.0, 50.0, 50.0, NUMOFSEGMENTS);
     }
 
     @Override
