@@ -28,14 +28,22 @@ public class AtomSimulation3D implements GLEventListener {
 
     
     public AtomSimulation3D() {
-        final GLProfile profile = GLProfile.get(GLProfile.GL4); // Version GL4
-        GLCapabilities capabilities = new GLCapabilities(profile);
+        System.setProperty("jogl.disable.openglarbcontext", "false");
+        System.setProperty("jogl.gljpanel.noglsl", "false");
 
-        glCanvas = new GLJPanel(capabilities);
+        // Use a more compatible profile
+        GLProfile profile = GLProfile.get(GLProfile.GL3);
+        GLCapabilities caps = new GLCapabilities(profile);
+        caps.setDoubleBuffered(true);
+        caps.setHardwareAccelerated(true);
+        caps.setAlphaBits(8);
+
+        this.glCanvas = new GLJPanel(caps);
         glCanvas.addGLEventListener(this);
 
 
     }
+
 
     public GLJPanel getCanvas() {
         return this.glCanvas;
@@ -117,6 +125,7 @@ public class AtomSimulation3D implements GLEventListener {
 
         GL4 gl = drawable.getGL().getGL4();
 
+
         String vertexShaderSource = loadShaderAsString("/com/zanoon/resources/shader/shader.vert");
         String fragmentShaderSource = loadShaderAsString("/com/zanoon/resources/shader/fragment.frag");
         int vShaderID = gl.glCreateShader(GL4.GL_VERTEX_SHADER);
@@ -155,7 +164,7 @@ public class AtomSimulation3D implements GLEventListener {
 
         gl.glBindVertexArray(vao[OBJECT]);
 
-        gl.glDrawArrays(GL4.GL_TRIANGLES_FAN, 0, NUMOFSEGMENTS * 2);
+        gl.glDrawArrays(GL4.GL_TRIANGLE_FAN, 0, NUMOFSEGMENTS * 2);
 
         drawCircle(50.0, 50.0, 50.0, NUMOFSEGMENTS);
     }
