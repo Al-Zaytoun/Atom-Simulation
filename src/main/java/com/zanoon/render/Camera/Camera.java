@@ -1,4 +1,4 @@
-package com.zanoon.render;
+package com.zanoon.render.Camera;
 
 import org.joml.Vector3f;
 
